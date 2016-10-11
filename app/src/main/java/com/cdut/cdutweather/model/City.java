@@ -6,9 +6,9 @@ package com.cdut.cdutweather.model;
 
 public class City {
     private int id;
-    private String cityName;
+    private String cityName_EN;
+    private String cityName_CH;
     private String cityCode;
-    private int provinceId;
 
     public int getId() {
         return id;
@@ -18,20 +18,20 @@ public class City {
         this.id = id;
     }
 
-    public String getCityName() {
-        return cityName;
+    public String getCityName_EN() {
+        return cityName_EN;
     }
 
-    public void setCityName(String cityName) {
-        this.cityName = cityName;
+    public void setCityName_EN(String cityName_EN) {
+        this.cityName_EN = cityName_EN;
     }
 
-    public int getProvinceId() {
-        return provinceId;
+    public String getCityName_CH() {
+        return cityName_CH;
     }
 
-    public void setProvinceId(int provinceId) {
-        this.provinceId = provinceId;
+    public void setCityName_CH(String cityName_CH) {
+        this.cityName_CH = cityName_CH;
     }
 
     public String getCityCode() {
