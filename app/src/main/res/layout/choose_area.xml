@@ -24,11 +24,13 @@
         android:id="@+id/edit_text"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:textSize="24dp" />
+        android:textSize="24dp"
+        />
 
     <ListView
         android:id="@+id/list_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"/>
+        android:clickable="true"
+        />
 </LinearLayout>

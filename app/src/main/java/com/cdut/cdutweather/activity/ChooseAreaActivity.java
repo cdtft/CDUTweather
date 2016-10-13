@@ -7,9 +7,11 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -54,9 +56,9 @@ public class ChooseAreaActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getSupportActionBar().hide();
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.choose_area);
-
         coolWeatherDB = CoolWeatherDB.getInstance(this);
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mSharedPreferences.edit();
@@ -99,7 +101,26 @@ public class ChooseAreaActivity extends AppCompatActivity {
         });
     }
 
+    //从服务器中获取天气数据
     private void queryWeatherFromServer() {
+        String address = "https://api.heweather.com/x3/weather?cityid="+selectedCity.getCityCode()+ "&key=" + KEY;
+        showProgressDialog();
+        HttpUtil.sendHttpRequest(address, new HttpCallBackListener() {
+            @Override
+            public void onFinish(String response) {
+                if(Utility.handWeatherResponse(mEditor, response)){
+                    closeProgressDialog();
+                    //进度条消失说明请求的天气数据已经出入在本地
+                    setResult(RESULT_OK);
+                    finish();
+                }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
+        });
     }
 
     /*重数据库中查询所有的城市信息*/
@@ -116,6 +137,7 @@ public class ChooseAreaActivity extends AppCompatActivity {
     /*从服务器上获取数据*/
     private void queryCitiesFromServer() {
         String address = " https://api.heweather.com/x3/citylist?search=allchina&key=" + KEY;
+        //当向服务器发送请求时（耗时操作）弹出
         showProgressDialog();
         HttpUtil.sendHttpRequest(address, new HttpCallBackListener() {
             @Override
